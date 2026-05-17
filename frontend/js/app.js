@@ -613,10 +613,12 @@ class BookRenderer {
         }
 
         // Interaction: Flip
-        const bookEl = scene.querySelector('.book-container-3d');
+        const bookEl = scene.querySelector('.book');
         scene.addEventListener('click', (e) => {
             if (!e.target.closest('.btn-icon') && !e.target.closest('.reading-progress')) {
-                bookEl.classList.toggle('flipped');
+                if (bookEl) {
+                    bookEl.classList.toggle('flipped');
+                }
                 // Play sound
                 flipSound.play().catch(e => {
                     if (IS_DEV) {
