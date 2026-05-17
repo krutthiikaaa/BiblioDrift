@@ -1909,16 +1909,35 @@ with app.app_context():
 @app.route('/api/books', methods=['GET'])
 def get_books():
     query = request.args.get('q')
-    max_results = request.args.get('maxResults', 10)
-
-    API_KEY = os.getenv("GOOGLE_BOOKS_API_KEY")
-    url = f"https://www.googleapis.com/books/v1/volumes?q={query}&maxResults={max_results}&key={API_KEY}"
+    if not query:
+        return jsonify({"error": "Query parameter 'q' is required"}), 400
 
     try:
-        response = requests.get(url)
-        data = response.json()
-        return jsonify(data)
+        max_results = int(request.args.get('maxResults', 10))
+    except ValueError:
+        max_results = 10
+
+    api_key = os.getenv('GOOGLE_BOOKS_API_KEY')
+    params = {
+        'q': query,
+        'maxResults': max_results,
+    }
+    if api_key:
+        params['key'] = api_key
+
+    try:
+        response = requests.get(
+            'https://www.googleapis.com/books/v1/volumes',
+            params=params,
+            timeout=8
+        )
+        response.raise_for_status()
+        return jsonify(response.json())
+    except requests.exceptions.RequestException as e:
+        logger.error('Google Books request failed: %s', e)
+        return jsonify({"error": "Failed to fetch books from Google Books"}), 502
     except Exception as e:
+        logger.exception('Unexpected error fetching books')
         return jsonify({"error": "Failed to fetch books"}), 500
 
 if __name__ == '__main__':
