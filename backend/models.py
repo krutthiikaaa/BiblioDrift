@@ -346,6 +346,20 @@ class BookNote(db.Model, SoftDeleteMixin):
         }
 
 
+class MoodCache(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    cache_key = db.Column(db.String(512), nullable=False, index=True)
+    book_title = db.Column(db.String(255), nullable=False)
+    book_author = db.Column(db.String(255), nullable=False, default="")
+    analysis_json = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
+
+    __table_args__ = (
+        db.UniqueConstraint('cache_key', name='uq_mood_cache_key'),
+    )
+
+
 class ReadingGoal(db.Model, SoftDeleteMixin):
     query_class = SoftDeleteQuery
     """Model for tracking user's annual reading goals."""
