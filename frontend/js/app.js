@@ -978,6 +978,37 @@ class BookRenderer {
             };
         }
 
+        // Fetch and render purchase links
+        const purchaseLinksEl = document.getElementById('modal-purchase-links');
+        if (purchaseLinksEl) {
+            purchaseLinksEl.innerHTML = '<div class="text-skeleton skeleton" style="width: 100%; height: 30px;"></div>';
+            
+            const title = encodeURIComponent(book.volumeInfo.title || '');
+            const author = encodeURIComponent(book.volumeInfo.authors ? book.volumeInfo.authors[0] : '');
+            let isbn = '';
+            if (book.volumeInfo.industryIdentifiers) {
+                const identifier = book.volumeInfo.industryIdentifiers.find(i => i.type === 'ISBN_13' || i.type === 'ISBN_10');
+                if (identifier) isbn = encodeURIComponent(identifier.identifier);
+            }
+            
+            fetch(`${MOOD_API_BASE}/books/purchase-links?title=${title}&author=${author}&isbn=${isbn}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success && data.links && data.links.length > 0) {
+                        const linksHtml = data.links.map(link => {
+                            return `<a href="${link.url}" target="_blank" class="purchase-link-btn" style="background-color: ${link.color || 'var(--wood-dark)'}; color: white; padding: 5px 10px; border-radius: 5px; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; margin-right: 5px; margin-bottom: 5px; font-size: 0.85rem;">
+                                <i class="${link.icon || 'fa-solid fa-book'}"></i> ${link.name}
+                            </a>`;
+                        }).join('');
+                        purchaseLinksEl.innerHTML = linksHtml;
+                    } else {
+                        purchaseLinksEl.innerHTML = '<p class="modal-subtitle" style="margin: 0; font-size: 0.85rem; opacity: 0.7;">No purchase links available.</p>';
+                    }
+                })
+                .catch(err => {
+                    console.error('Failed to load purchase links', err);
+                    purchaseLinksEl.innerHTML = '<p class="modal-subtitle" style="margin: 0; font-size: 0.85rem; opacity: 0.7;">Failed to load purchase links.</p>';
+                });
         // Explore Mood Button
         const moodBtnModal = document.getElementById('modal-mood-btn');
         if (moodBtnModal) {
@@ -2394,48 +2425,110 @@ class LibraryManager {
 class ThemeManager {
     constructor() {
         this.themeKey = 'bibliodrift_theme';
-        this.toggleBtn = document.getElementById('themeToggle');
-        // Use SafeStorage for consistency with app's storage strategy
-        const stored = SafeStorage.get(this.themeKey);
-        this.currentTheme = stored === 'night' ? 'night' : 'light';
-        // Named handler so we can remove & re-add cleanly (no stacking)
+        this.toggleBtn = null;
+        this.currentTheme = 'light';
+
+        // Named handler so we can safely remove/re-add without stacking listeners
         this._handler = this._onClick.bind(this);
-        this.init();
+
+        // Wait until the DOM is ready before querying #themeToggle
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => this.init(), { once: true });
+        } else {
+            this.init();
+        }
+    }
+
+    _getStoredTheme() {
+        // Safe fallback if SafeStorage is not loaded yet
+        try {
+            if (typeof SafeStorage !== 'undefined' && SafeStorage.get) {
+                const stored = SafeStorage.get(this.themeKey);
+                return stored === 'night' ? 'night' : 'light';
+            }
+
+            const stored = localStorage.getItem(this.themeKey);
+            return stored === 'night' ? 'night' : 'light';
+        } catch {
+            return 'light';
+        }
+    }
+
+    _saveTheme(theme) {
+        try {
+            if (typeof SafeStorage !== 'undefined' && SafeStorage.set) {
+                SafeStorage.set(this.themeKey, theme);
+            } else {
+                localStorage.setItem(this.themeKey, theme);
+            }
+        } catch {
+            // Ignore storage errors
+        }
     }
 
     _onClick() {
-        this.currentTheme = this.currentTheme === 'night' ? 'light' : 'night';
+        this.currentTheme =
+            this.currentTheme === 'night' ? 'light' : 'night';
+
         this.applyTheme(this.currentTheme);
-        SafeStorage.set(this.themeKey, this.currentTheme);
+        this._saveTheme(this.currentTheme);
     }
 
     init() {
-        if (!this.toggleBtn) return;
+        // Re-query in case the button wasn't available during construction
+        this.toggleBtn = document.getElementById('themeToggle');
+
+        // Load saved theme and apply it even if the button doesn't exist
+        this.currentTheme = this._getStoredTheme();
         this.applyTheme(this.currentTheme);
-        // Remove before add to prevent duplicate listeners if init is called twice
+
+        // Exit if no toggle button on this page
+        if (!this.toggleBtn) return;
+
+        // Prevent duplicate listeners if init() runs more than once
         this.toggleBtn.removeEventListener('click', this._handler);
         this.toggleBtn.addEventListener('click', this._handler);
     }
 
     applyTheme(theme) {
-        if (theme === 'night') {
+        const isNight = theme === 'night';
+
+        // Apply theme to <html>
+        if (isNight) {
             document.documentElement.setAttribute('data-theme', 'night');
         } else {
             document.documentElement.removeAttribute('data-theme');
         }
-        // Update icon — use className directly, cannot fail
+
+        // Update toggle button icon and accessibility labels
         if (this.toggleBtn) {
             const icon = this.toggleBtn.querySelector('i');
+
             if (icon) {
-                icon.className = theme === 'night'
+                icon.className = isNight
                     ? 'fa-solid fa-sun'
                     : 'fa-solid fa-moon';
             }
+
+            this.toggleBtn.title = isNight
+                ? 'Switch to Light Mode'
+                : 'Switch to Dark Mode';
+
+            this.toggleBtn.setAttribute(
+                'aria-label',
+                this.toggleBtn.title
+            );
+
+            this.toggleBtn.setAttribute(
+                'aria-pressed',
+                String(isNight)
+            );
         }
     }
 }
 
-
+// Initialize once
+window.themeManager = new ThemeManager();
 
 class GenreManager {
     constructor(libraryManager = null) {
