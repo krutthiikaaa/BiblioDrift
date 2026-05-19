@@ -716,6 +716,7 @@
         
         document.documentElement.setAttribute('data-theme', nextTheme);
         localStorage.setItem('bibliodrift_theme', nextTheme);
+        if (typeof restoreTheme === 'function') restoreTheme();
         updateThemeToggleButton(nextTheme);
       });
 

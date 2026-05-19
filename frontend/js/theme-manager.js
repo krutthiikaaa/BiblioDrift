@@ -5,54 +5,136 @@
 
 const THEMES = {
     "rainy": {
-        "--theme-bg": "#eef2f5",
-        "--theme-surface": "#ffffff",
-        "--theme-accent": "#5a7d9a",
-        "--theme-accent-light": "#a5b8c8",
-        "--theme-text": "#2c3e50",
-        "--theme-text-muted": "#7f8c8d",
-        "--theme-border": "#d1d9e0",
-        "--theme-pill-bg": "#f0f4f7"
+        light: {
+            "--theme-bg": "#eef2f5",
+            "--theme-surface": "#ffffff",
+            "--theme-accent": "#5a7d9a",
+            "--theme-accent-light": "#a5b8c8",
+            "--theme-text": "#2c3e50",
+            "--theme-text-muted": "#7f8c8d",
+            "--theme-border": "#d1d9e0",
+            "--theme-pill-bg": "#f0f4f7"
+        },
+        dark: {
+            "--theme-bg": "#101820",
+            "--theme-surface": "#1a252f",
+            "--theme-accent": "#7393B3",
+            "--theme-accent-light": "#89a5c1",
+            "--theme-text": "#d5e1ec",
+            "--theme-text-muted": "#8da1b5",
+            "--theme-border": "#283b4e",
+            "--theme-pill-bg": "#213243"
+        }
     },
-    "cozy": {
-        "--theme-bg": "#fcf9f2",
-        "--theme-surface": "#ffffff",
-        "--theme-accent": "#b68d40",
-        "--theme-accent-light": "#d4a373",
-        "--theme-text": "#4a3728",
-        "--theme-text-muted": "#8b7355",
-        "--theme-border": "#e9e4d9",
-        "--theme-pill-bg": "#f7f3e9"
-    },
-    "dark-academia": {
-        "--theme-bg": "#1c1c1c",
-        "--theme-surface": "#2a2a2a",
-        "--theme-accent": "#8b4513",
-        "--theme-accent-light": "#a0522d",
-        "--theme-text": "#e0d5cb",
-        "--theme-text-muted": "#a89a8e",
-        "--theme-border": "#3e3e3e",
-        "--theme-pill-bg": "#333333"
+    "stormy": {
+        light: {
+            "--theme-bg": "#cfd8dc",
+            "--theme-surface": "#b0bec5",
+            "--theme-accent": "#455a64",
+            "--theme-accent-light": "#78909c",
+            "--theme-text": "#263238",
+            "--theme-text-muted": "#546e7a",
+            "--theme-border": "#90a4ae",
+            "--theme-pill-bg": "#eceff1"
+        },
+        dark: {
+            "--theme-bg": "#0a1014",
+            "--theme-surface": "#121b22",
+            "--theme-accent": "#546e7a",
+            "--theme-accent-light": "#78909c",
+            "--theme-text": "#b0bec5",
+            "--theme-text-muted": "#78909c",
+            "--theme-border": "#263238",
+            "--theme-pill-bg": "#1c2730"
+        }
     },
     "ocean": {
-        "--theme-bg": "#f0f8ff",
-        "--theme-surface": "#ffffff",
-        "--theme-accent": "#0077be",
-        "--theme-accent-light": "#5dade2",
-        "--theme-text": "#003366",
-        "--theme-text-muted": "#546e7a",
-        "--theme-border": "#add8e6",
-        "--theme-pill-bg": "#e1f5fe"
+        light: {
+            "--theme-bg": "#e0f2f1",
+            "--theme-surface": "#ffffff",
+            "--theme-accent": "#00796b",
+            "--theme-accent-light": "#4db6ac",
+            "--theme-text": "#004d40",
+            "--theme-text-muted": "#00695c",
+            "--theme-border": "#b2dfdb",
+            "--theme-pill-bg": "#e8f5e9"
+        },
+        dark: {
+            "--theme-bg": "#001a14",
+            "--theme-surface": "#002820",
+            "--theme-accent": "#26a69a",
+            "--theme-accent-light": "#4db6ac",
+            "--theme-text": "#b2dfdb",
+            "--theme-text-muted": "#80cbc4",
+            "--theme-border": "#004d40",
+            "--theme-pill-bg": "#003b30"
+        }
+    },
+    "cozy": {
+        light: {
+            "--theme-bg": "#fcf9f2",
+            "--theme-surface": "#ffffff",
+            "--theme-accent": "#b68d40",
+            "--theme-accent-light": "#d4a373",
+            "--theme-text": "#4a3728",
+            "--theme-text-muted": "#8b7355",
+            "--theme-border": "#e9e4d9",
+            "--theme-pill-bg": "#f7f3e9"
+        },
+        dark: {
+            "--theme-bg": "#1c140e",
+            "--theme-surface": "#2d2118",
+            "--theme-accent": "#d4a373",
+            "--theme-accent-light": "#faedcb",
+            "--theme-text": "#fcf9f2",
+            "--theme-text-muted": "#c8b09d",
+            "--theme-border": "#4a3728",
+            "--theme-pill-bg": "#3e2f23"
+        }
+    },
+    "dark-academia": {
+        light: {
+            "--theme-bg": "#d7ccc8",
+            "--theme-surface": "#a1887f",
+            "--theme-accent": "#5d4037",
+            "--theme-accent-light": "#795548",
+            "--theme-text": "#3e2723",
+            "--theme-text-muted": "#4e342e",
+            "--theme-border": "#8d6e63",
+            "--theme-pill-bg": "#efebe9"
+        },
+        dark: {
+            "--theme-bg": "#120f0e",
+            "--theme-surface": "#1e1816",
+            "--theme-accent": "#a0522d",
+            "--theme-accent-light": "#cd853f",
+            "--theme-text": "#d7ccc8",
+            "--theme-text-muted": "#a1887f",
+            "--theme-border": "#3e2723",
+            "--theme-pill-bg": "#2b221f"
+        }
     },
     "indian-authors": {
-        "--theme-bg": "#fffbf0",
-        "--theme-surface": "#ffffff",
-        "--theme-accent": "#e67e22",
-        "--theme-accent-light": "#f39c12",
-        "--theme-text": "#1b5e20",
-        "--theme-text-muted": "#4e342e",
-        "--theme-border": "#ffe0b2",
-        "--theme-pill-bg": "#fff3e0"
+        light: {
+            "--theme-bg": "#fffbf0",
+            "--theme-surface": "#ffffff",
+            "--theme-accent": "#e67e22",
+            "--theme-accent-light": "#f39c12",
+            "--theme-text": "#1b5e20",
+            "--theme-text-muted": "#4e342e",
+            "--theme-border": "#ffe0b2",
+            "--theme-pill-bg": "#fff3e0"
+        },
+        dark: {
+            "--theme-bg": "#1a120b",
+            "--theme-surface": "#2d1e12",
+            "--theme-accent": "#d84315",
+            "--theme-accent-light": "#ff5722",
+            "--theme-text": "#ffecb3",
+            "--theme-text-muted": "#ffcc80",
+            "--theme-border": "#4e342e",
+            "--theme-pill-bg": "#3e2723"
+        }
     }
 };
 
@@ -61,11 +143,15 @@ const THEMES = {
  * @param {string} themeName - The key of the theme to apply.
  */
 function setTheme(themeName) {
-    const theme = THEMES[themeName];
-    if (!theme) {
+    const baseTheme = THEMES[themeName];
+    if (!baseTheme) {
         console.warn("Unknown theme:", themeName);
         return;
     }
+
+    const currentCoreTheme = localStorage.getItem('bibliodrift_theme');
+    const isDark = (currentCoreTheme === 'night' || currentCoreTheme === 'dark');
+    const theme = isDark ? baseTheme.dark : baseTheme.light;
 
     // Apply all CSS variables defined in the theme
     Object.keys(theme).forEach(key => {
@@ -73,7 +159,7 @@ function setTheme(themeName) {
     });
 
     // Set data attribute on html for theme-specific CSS selectors
-    document.documentElement.setAttribute('data-theme', themeName);
+    document.documentElement.setAttribute('data-mood', themeName);
     
     // Store mood theme separately so we don't break the light/dark mode preference!
     localStorage.setItem("bibliodrift_mood", themeName);
@@ -83,21 +169,14 @@ function setTheme(themeName) {
  * Clears the mood theme and restores the original Light/Night mode.
  */
 function clearTheme() {
-    // Remove mood theme variables
-    const sampleTheme = THEMES["rainy"];
+    // Remove mood theme variables (using rainy.light as a map of keys)
+    const sampleTheme = THEMES["rainy"].light;
     Object.keys(sampleTheme).forEach(key => {
         document.documentElement.style.removeProperty(key);
     });
 
+    document.documentElement.removeAttribute('data-mood');
     localStorage.removeItem("bibliodrift_mood");
-
-    // Restore original light/night theme
-    const originalTheme = localStorage.getItem('bibliodrift_theme');
-    if (originalTheme === 'night' || originalTheme === 'dark') {
-        document.documentElement.setAttribute('data-theme', 'night');
-    } else {
-        document.documentElement.removeAttribute('data-theme');
-    }
 }
 
 /**

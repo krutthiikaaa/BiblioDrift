@@ -145,7 +145,7 @@ class AmbientManager {
         // Stormy Rain Toggle
         this.stormToggle.addEventListener('change', () => {
             if (this.stormToggle.checked) {
-                if (typeof setTheme === 'function') setTheme('rainy');
+                if (typeof setTheme === 'function') setTheme('stormy');
                 this.stormAudio.currentTime = 0;
                 this.stormAudio.play()
                     .then(() => console.log("Storm audio playing"))

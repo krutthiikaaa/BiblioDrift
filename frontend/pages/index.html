@@ -313,6 +313,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         localStorage.setItem(STORAGE_KEY, theme);
+        if (typeof restoreTheme === 'function') restoreTheme();
         console.log('Theme applied:', theme);
     }
 
