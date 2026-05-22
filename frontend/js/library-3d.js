@@ -413,7 +413,7 @@ class BookshelfRenderer3D {
             mood: '#8b5cf6'
         };
 
-        const localLibrary = this.getLibraryState();        
+        const localLibrary = this.getLibraryState();    
         const allBooks = ['current', 'want', 'finished'].flatMap(s =>
             (localLibrary[s] || []).map(b => ({ ...b, shelfType: s }))
         );
@@ -1157,7 +1157,7 @@ class BookshelfRenderer3D {
 
         renderChunk();
 
-        container.setAttribute('aria-label', `${shelfLabels[shelfType]} - ${books.length} book${books.length !== 1 ? 's' : ''} `);
+        container.setAttribute('aria-label', `${shelfLabels[shelfType]} - ${books.length} book${books.length !== 1 ? 's' : ''}`);
     }
 
     createBookCard2D(book, shelfType) {
@@ -2463,13 +2463,29 @@ class BookshelfRenderer3D {
                             </div>
                         `;
                     } else {
-                        aiNoteEl.innerHTML = `<p style="font-size: 0.85rem; color: var(--text-muted); font-style: italic;">AI is contemplating the deep themes of this journey...</p>`;
+                        aiNoteEl.innerHTML = `
+                            <div class="bookseller-note-card fade-in-note">
+                                <p class="bookseller-note-text">
+                                    AI is contemplating the deep themes of this journey...
+                                </p>
+                            </div>
+                        `;
                     }
                 });
             } else {
                 // Mock vibe for offline/fallback
                 setTimeout(() => {
-                    aiNoteEl.innerHTML = `<p style="font-size: 0.9rem; line-height: 1.5; color: var(--text-secondary); font-style: italic;">"A journey that resonates with the soul, perfect for quiet introspection."</p>`;
+                    aiNoteEl.innerHTML = `
+                        <div class="bookseller-note-card fade-in-note">
+                            <div class="bookseller-note-label">
+                                ✨ Bookseller's Note
+                            </div>
+
+                            <p class="bookseller-note-text">
+                                "A journey that resonates with the soul, perfect for quiet introspection."
+                            </p>
+                        </div>
+                    `;
                 }, 800);
             }
         }
