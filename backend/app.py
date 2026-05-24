@@ -181,11 +181,12 @@ def _apply_security_headers(response):
     """Apply hardening headers to every API response."""
     csp_policy = (
         "default-src 'self'; "
-        "script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; "
+        "script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.google.com; "
         "style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; "
         "img-src 'self' data: https:; "
         "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; "
         "connect-src 'self' https: ws: wss:; "
+        "frame-src 'self' https://books.google.com https://www.google.com; "
         "object-src 'none'; "
         "base-uri 'self'; "
         "frame-ancestors 'none'; "
