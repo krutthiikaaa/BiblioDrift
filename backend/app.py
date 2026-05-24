@@ -250,6 +250,11 @@ def _apply_security_headers(response):
     response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
     response.headers['Permissions-Policy'] = 'geolocation=(), microphone=(), camera=()'
     response.headers['X-Frame-Options'] = 'DENY'
+    
+    # Add Cache-Control for 3D assets and static images
+    if request.path.endswith(('.gltf', '.obj', '.png')):
+        response.headers['Cache-Control'] = 'public, max-age=31536000, immutable'
+        
     return response
 
 # =====================================================================
