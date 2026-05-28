@@ -1256,26 +1256,6 @@ def handle_chat(validated_data):
         logger.error(f"Unexpected error in handle_chat: {type(e).__name__}: {e}", exc_info=True)
         return handle_exception(e, "handle_chat")
 
-@app.route('/api/v1/health', methods=['GET'])
-def health_check():
-    """Health check endpoint with cache statistics."""
-    cache_stats = cache_service.get_stats()
-    
-    return jsonify({
-        "status": "healthy",
-        "service": "BiblioDrift AI Service",
-        "version": "2.0.0",
-        "features": {
-            "mood_analysis_available": MOOD_ANALYSIS_AVAILABLE,
-            "llm_service_available": llm_service.is_available(),
-            "openai_configured": llm_service.openai_client is not None,
-            "groq_configured": llm_service.groq_client is not None,
-            "gemini_configured": llm_service.gemini_client is not None,
-            "preferred_llm": llm_service.preferred_llm,
-            "caching_enabled": cache_stats.get('cache_type') != 'null'
-        },
-        "cache": cache_stats
-    })
 
 
 # =========================================================================
